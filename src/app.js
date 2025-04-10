@@ -5,14 +5,16 @@ const morgan = require("morgan");
 const dotenv = require("dotenv");
 const errorHandler = require("./middleware/errorHandler");
 const { default: helmet } = require("helmet");
+const setupSwaggerDocs = require("./docs/swagger");
 dotenv.config();
 const app = express();
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use("/tasks", taskRoutes); // Define la ruta base para las tareas
+setupSwaggerDocs(app); //Configuración de Swagger
 app.use(errorHandler);
-app.use(helmet());
+app.use(helmet()); // Configuración de Helmet
 const pool = require("./config/db");
 
 const PORT = process.env.DB_PORT || 3000;
